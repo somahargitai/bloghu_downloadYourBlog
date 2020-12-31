@@ -1,3 +1,8 @@
+# downloadParsers
+downloadParsers/node_modules
+downloadParsers/package-lock.json
+downloadersParsers\package-lock.json
+
 # Logs
 logs
 *.log
