@@ -3,33 +3,62 @@ const cheerio = require("cheerio");
 
 const scrapeLink = require("./scrapeLink");
 
-const processArchive = async () => {
-  const archiveLink = `${blogLink}/archive`;
+const weekResults = [];
+const weekQueue = new Queue(async function (task, done) {
+  const result = await task.job();
+  weekResults.push(result);
 
-  const website = await scrapeLink(archiveLink);
-  const $ = cheerio.load(website, { xmlMode: true });
+  console.log(`[Week processed: ${task.name}]`);
+  done(null, result);
+});
+
+const collectWeekLinks = async (blogLink) => {
+  const archiveLink = `${blogLink}/archive`;
+  console.log(`[archive] start - ${archiveLink}`);
+
+  const websiteObject = await scrapeLink(archiveLink);
+
+  const $ = cheerio.load(websiteObject.data, { xmlMode: true });
   const weekLinks = $("ul.archive-list > li > a");
   const weekCounts = $("ul.archive-list > li > a > span.postcount");
+  const weekNames = $("ul.archive-list > li > a > span.week");
+  const weekYears = $("ul.archive-list > li > a > span.year");
 
   console.log(
-    `weeklinks length: ${weekLinks.length}, weekcount length: ${weekCounts.length}`
+    `[weeks] start (links: ${weekLinks.length}, counts: ${weekCounts.length})`
   );
 
+  // going through all the week links
   $(weekLinks).each((weekLinkIndex, weekLinkItem) => {
     const hrefBase = $(weekLinkItem).attr("href");
     const pageCount = Math.ceil($(weekCounts[weekLinkIndex]).text() / 10);
 
-    console.log(hrefBase);
-    console.log(pageCount);
-
+    // generating links of all the pages of all the weeks
     for (let index = 1; index <= pageCount; index++) {
       const pageLink = `${hrefBase}/page/${index}`;
-      weekQueue.enqueue(() => {
-        console.log(`in queue: ${pageLink}`);
-        return getWeek(pageLink);
+
+      const name = `${$(weekYears[weekLinkIndex]).text()} ${$(
+        weekNames[weekLinkIndex]
+      ).text()} [${$(weekCounts[weekLinkIndex]).text()}] page ${index}`;
+
+      weekQueue.push({
+        name: name,
+        url: pageLink,
+        job: async () => {
+          // console.log(`[week no.${index} scraped ✔️ ]`);
+        },
       });
     }
   });
+};
+
+const main = async () => {
+  await collectWeekLinks("http://somacher.blog.hu");
+  weekQueue.on("empty", function () {
+    console.log(`[-- SUM week page links: ${weekResults.length} --]`);
+  });
+
+  // console.log(weekResults[0])
 };
 
 const scrapingQueue = new Queue(async function (task, done) {
@@ -39,27 +68,30 @@ const scrapingQueue = new Queue(async function (task, done) {
   done(null, result);
 });
 
+main();
+
+/*
 scrapingQueue.push({
-    name: "blog",
-    url: "http://somacher.blogol.hu",
-    job: async () => {
-      console.log("stuff done");
-    },
-  });
-  scrapingQueue.push({
-    name: "blog",
-    url: "http://somacher.blogol.hu",
-    job: async () => {
-      console.log("stuff done");
-    },
-  });
-  scrapingQueue.push({
-    name: "blog",
-    url: "http://somacher.blogol.hu",
-    job: async () => {
-      console.log("stuff done");
-    },
-  });
+  name: "blog",
+  url: "http://somacher.blogol.hu",
+  job: async () => {
+    console.log("stuff done");
+  },
+});
+scrapingQueue.push({
+  name: "blog",
+  url: "http://somacher.blogol.hu",
+  job: async () => {
+    console.log("stuff done");
+  },
+});
+scrapingQueue.push({
+  name: "blog",
+  url: "http://somacher.blogol.hu",
+  job: async () => {
+    console.log("stuff done");
+  },
+});
 
 const blogLinkSoma = "http://google.com";
 scrapingQueue.push({
