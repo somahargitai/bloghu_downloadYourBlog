@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <!-- <title>My Website</title> -->
+    <!-- <link rel="stylesheet" type="text/css" href="frame.css" /> -->
+
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      header {
+        z-index: 2;
+        background-color: #333;
+        color: white;
+        padding-left: 15em;
+        padding-right: 15em;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        width: 100%;
+        position: fixed;
+      }
+
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 1em;
+        text-align: center;
+
+        bottom: 0;
+        width: 100%;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+
+      nav li {
+        margin-right: 1em;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+      }
+
+      main {
+        display: flex;
+        flex-wrap: wrap;
+        flex-grow: 1;
+        padding-left: 15em;
+        padding-right: 15em;
+        padding-top: 5em;
+        padding-bottom: 1em;
+      }
+
+      article {
+        flex: 2;
+        padding: 1em;
+        flex: 1;
+      }
+
+      aside {
+        z-index: 1;
+        flex: 1;
+        padding: 2em;
+        background-color: #f0f0f0;
+        position: relative;
+        max-width: 10em;
+      }
+
+      aside h2 {
+        margin-top: 0;
+      }
+
+      aside ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      aside li {
+        margin-bottom: 0.5em;
+      }
+
+      .comments-title {
+        margin-top: 3em;
+        background-color: #333;
+        color: white;
+        padding: 1em;
+      }
+
+      .comment-header {
+        /* background-color: #333; */
+        /* color: white; */
+        padding: 1em;
+        margin-bottom: 1em;
+      }
+
+      @media only screen and (max-width: 1000px) {
+        main {
+          flex-direction: column;
+          padding-left: 1em;
+          padding-right: 1em;
+          padding-top: 5em;
+          padding-bottom: 1em;
+        }
+
+        header {
+          padding-left: 1em;
+          padding-right: 1em;
+          padding-top: 1em;
+          padding-bottom: 1em;
+        }
+        aside {
+          position: static;
+          margin-top: 1em;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <h1></h1>
+        <p></p>
+      </article>
+      <aside>
+        <!-- <h2>Archive</h2>
+        <ul>
+           <li><a href="#">March 2022</a></li>
+          <li><a href="#">February 2022</a></li>
+          <li><a href="#">January 2022</a></li>
+          <li><a href="#">March 2022</a></li>
+          <li><a href="#">February 2022</a></li>
+          <li><a href="#">January 2022</a></li>
+          <li><a href="#">March 2022</a></li>
+          <li><a href="#">February 2022</a></li>
+          <li><a href="#">January 2022</a></li>
+        </ul> -->
+      </aside>
+    </main>
+    <footer>
+      <p>&copy; 2023 My Website. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
